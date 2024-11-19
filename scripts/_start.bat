@@ -1,5 +1,5 @@
 @echo off
 
-start cmd /k "cd src && npm start"
+start cmd /k "cd client/src && npm start"
 
 exit
