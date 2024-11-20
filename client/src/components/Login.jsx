@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { loginUser } from "../redux/actions";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Get the navigate function
 
   const handleLogin = () => {
-    dispatch(loginUser(username));
+    dispatch(loginUser(username)); // Dispatch login action
+    navigate("/chat"); // Use navigate to redirect to chat page
   };
 
   return (
