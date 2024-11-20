@@ -1,37 +1,38 @@
-import React from "react";
-import { Provider } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import store from "./redux/store";
-import Login from "./components/Login";
-import Chat from "./components/Chat";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./hooks/useAuth";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import Reset from "./pages/auth/Reset";
+import Home from "./pages/HomePage";
+// import Secret from "./pages/protected/Secret";
+// import ProtectedRoute from "./components/routes/ProtectedRoute";
+import Navbar from "./components/Navbar";
 
-const App = () => {
-  const isAuthenticated = Boolean(store.getState().user); // Check if user is authenticated
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "./configs/firebaseConfig";
 
+function App() {
+  initializeApp(firebaseConfig);
   return (
-    <Provider store={store}>
-      <Router>
-        <div className="container mx-auto">
-          <Routes>
-            <Route
-              path="/login"
-              element={isAuthenticated ? <Navigate to="/chat" /> : <Login />}
-            />
-            <Route
-              path="/chat"
-              element={isAuthenticated ? <Chat /> : <Navigate to="/login" />}
-            />
-            <Route path="/" element={<Navigate to="/login" />} />
-          </Routes>
-        </div>
-      </Router>
-    </Provider>
+    <Router>
+      <AuthProvider>
+        <Navbar />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/reset" element={<Reset />} />
+
+          {/* <Route element={<ProtectedRoute />}>
+          <Route path="/protected" element={<Secret />} />
+        </Route> */}
+
+          <Route path="*" element={<h1>404 Not Found</h1>} />
+        </Routes>
+      </AuthProvider>
+    </Router>
   );
-};
+}
 
 export default App;
