@@ -1,31 +1,51 @@
 import React, { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useAuth } from "../../contexts/authContext";
+import { auth } from "../../configs/firebaseConfig";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const auth = getAuth();
+  const { user } = useAuth();
 
   const handleLogin = () => {
+    if (!email || !password) {
+      setError("Email and password are required");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("Signed in user: ", user);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("An error occurred: ", errorCode, errorMessage);
+        setError(error.message);
+        console.log("An error occurred: ", error.code, error.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
+
+  if (user) {
+    return <p>You are already logged in.</p>;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <h1 className="text-2xl font-bold mb-6">Login</h1>
+      {error && <p className="text-red-500">{error}</p>}
       <div className="mb-4 w-80">
-        {" "}
-        {/* Ширина полей ввода */}
         <label className="block text-sm font-medium text-gray-700">
           Email:
         </label>
@@ -51,9 +71,12 @@ const Login = () => {
       </div>
       <button
         onClick={handleLogin}
-        className="w-80 p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
+        disabled={loading}
+        className={`w-80 p-2 ${
+          loading ? "bg-gray-400" : "bg-blue-600"
+        } text-white rounded-md hover:bg-blue-700 transition duration-200`}
       >
-        Log In
+        {loading ? "Logging in..." : "Log In"}
       </button>
     </div>
   );

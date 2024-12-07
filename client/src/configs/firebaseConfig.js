@@ -1,8 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
 import config from "./config.json";
 
-export const firebaseConfig = {
+const firebaseConfig = {
   apiKey: config.FIREBASE_API_KEY,
   authDomain: config.FIREBASE_AUTH_DOMAIN,
   projectId: config.FIREBASE_PROJECT_ID,
@@ -12,6 +12,5 @@ export const firebaseConfig = {
   measurementId: config.FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+export const auth = getAuth(app);
