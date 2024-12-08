@@ -1,10 +1,9 @@
-// src/components/ChatList.js
 import React from "react";
 
 const ChatList = ({ chats, onSelectChat }) => {
   return (
-    <div className="bg-white shadow-md h-full p-4">
-      <h2 className="text-lg font-bold mb-4">Chats</h2>
+    <div className="bg-white h-auto p-4">
+      <h2 className="text-lg font-bold mb-4">Чаты</h2>
       <ul className="space-y-2">
         {chats.map((chat) => (
           <li

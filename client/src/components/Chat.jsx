@@ -17,7 +17,7 @@ const Chat = ({ chatId, userId }) => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-[90%]">
       <div className="flex-1 overflow-auto p-4">
         {messages.map((msg) => (
           <div

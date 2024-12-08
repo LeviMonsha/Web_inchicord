@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../configs/firebaseConfig";
 import Navbar from "../components/Navbar";
-import ChatList from "../components/ChatList";
 import Chat from "../components/Chat";
 
 const ChatsPage = () => {
@@ -45,22 +44,19 @@ const ChatsPage = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen flex">
-      <Navbar />
-      <div className="flex flex-row w-full">
-        <ChatList chats={chats} onSelectChat={handleSelectChat} />
-        <div className="flex-1 p-4">
-          <div className="flex justify-between p-4 bg-white shadow-md mb-4">
-            <h1 className="text-xl font-bold">
-              {selectedChatName || "Выберите чат"}
-            </h1>
-          </div>
-          {selectedChatId ? (
-            <Chat chatId={selectedChatId} userId={userId} />
-          ) : (
-            <div className="text-center">Выберите чат для начала общения</div>
-          )}
+    <div className="bg-gray-100 min-h-screen flex flex-row">
+      <Navbar chats={chats} onSelectChat={handleSelectChat} />
+      <div className="flex-1 p-4">
+        <div className="flex justify-between p-4 bg-white shadow-md mb-4">
+          <h1 className="text-xl font-bold">
+            {selectedChatName || "Выберите чат"}
+          </h1>
         </div>
+        {selectedChatId ? (
+          <Chat chatId={selectedChatId} userId={userId} />
+        ) : (
+          <div className="text-center">Выберите чат для начала общения</div>
+        )}
       </div>
     </div>
   );
